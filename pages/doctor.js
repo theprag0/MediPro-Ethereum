@@ -8,7 +8,7 @@ import ehr from '../ethereum/ehr';
 import {create} from 'ipfs-http-client';
 
 function Doctor() {
-    const {mainAccount} = useContext(AuthenticationContext);
+    const {mainAccount, role} = useContext(AuthenticationContext);
     const [patient, setPatient] = useState('');
     const [newPatient, setNewPatient] = useState('');
     const [registerLoading, setRegisterLoading] = useState(false);
@@ -116,18 +116,10 @@ function Doctor() {
         [ehr, mainAccount, newPatient]
     );
 
-    return (
-        <section className="Doctor">
-            <Container style={{margin: '40px 0'}}>
-                <div style={{backgroundColor: 'rgba(255, 255, 255, 0.91)', padding: '2rem', borderRadius: '15px', paddingBottom: '3rem'}}>
-                    <Menu>
-                        <Link href={'/'}>
-                            <a className="brand item">MediPro</a>
-                        </Link>
-                        <Menu.Menu position="right">
-                                <a className="item"><Icon name="user"/> <span>{mainAccount}</span></a>
-                        </Menu.Menu>
-                    </Menu>
+    const genContent = () => {
+        if(mainAccount && role === 'doctor') {
+            return (
+                <>
                     <div style={{width: '100%'}}>
                         <h1 className="dashboard-headers">Patient Records</h1>
                         <Form onSubmit={searchPatient} error={!!searchError}>
@@ -208,6 +200,42 @@ function Doctor() {
                             </Grid>
                         </Form>
                     </div>
+                </>
+            );
+        } else if(mainAccount && (role === 'patient' || role === 'unknown')) {
+            return (
+                <div className="warning">
+                    <h1>You are not authorized to visit this page.</h1>
+                    <Link href="/">
+                        <a>Go Home</a>
+                    </Link>
+                </div>
+            );
+        } else if(!mainAccount) {
+            return (
+                <div className="warning">
+                    <h1>Install the MetaMask extension to continue.</h1>
+                    <Link href="/">
+                        <a>Go Home</a>
+                    </Link>
+                </div>
+            );
+        }
+    }
+
+    return (
+        <section className="Doctor">
+            <Container style={{margin: '40px 0'}}>
+                <div style={{backgroundColor: 'rgba(255, 255, 255, 0.91)', padding: '2rem', borderRadius: '15px', paddingBottom: '3rem'}}>
+                    <Menu>
+                        <Link href={'/'}>
+                            <a className="brand item">MediPro</a>
+                        </Link>
+                        <Menu.Menu position="right">
+                                <a className="item"><Icon name="user"/> <span>{mainAccount}</span></a>
+                        </Menu.Menu>
+                    </Menu>
+                    {genContent()}
                 </div>
             </Container>
         </section>

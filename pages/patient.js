@@ -21,6 +21,41 @@ function Patient() {
         fetchData();
     }, []);
 
+    const genContent = () => {
+        if(mainAccount && role === 'patient') {
+            return (
+                <>
+                    <h1 className='dashboard-headers' style={{fontSize: '25px'}}>My Records</h1>
+                    {
+                        records && records.length > 0
+                        ? records.map((record, idx) => (
+                            <Record record={record} key={idx}/>
+                        ))
+                        : <p><em>You don't have any doctor visits yet. No Health Records Found.</em></p>
+                    }
+                </>
+            );
+        } else if(mainAccount && (role === 'doctor' || role === 'unknown')) {
+            return (
+                <div className="warning">
+                    <h1>You are not authorized to visit this page.</h1>
+                    <Link href="/">
+                        <a>Go Home</a>
+                    </Link>
+                </div>
+            );
+        } else if(!mainAccount) {
+            return (
+                <div className="warning">
+                    <h1>Install the MetaMask extension to continue.</h1>
+                    <Link href="/">
+                        <a>Go Home</a>
+                    </Link>
+                </div>
+            );
+        }
+    }
+
     return (
         <section className='Patient'>
             <Container style={{margin: '40px 0'}}>
@@ -33,14 +68,7 @@ function Patient() {
                                 <a className="item"><Icon name="user"/> <span>{mainAccount}</span> <span className='role-label'>{role}</span></a>
                         </Menu.Menu>
                     </Menu>
-                    <h1 className='dashboard-headers' style={{fontSize: '25px'}}>My Records</h1>
-                    {
-                        records && records.length > 0
-                        ? records.map((record, idx) => (
-                            <Record record={record} key={idx}/>
-                        ))
-                        : <p><em>You don't have any doctor visits yet. No Health Records Found.</em></p>
-                    }
+                    {genContent()}
                 </div>
             </Container>
         </section>

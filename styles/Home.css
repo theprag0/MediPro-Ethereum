@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Open+Sans:ital,wght@0,400;0,500;1,400;1,500&family=Tilt+Neon&display=swap');
 
 * {
     margin: 0;
@@ -22,21 +22,38 @@
 .Home div {
     position: absolute;
     top: 40%;
-    left: 40%;
+    left: 37%;
     text-align: center;
 }
 
 .Home h1 {
     color: #fff;
-    font-size: 35px;
+    font-size: 50px;
     letter-spacing: 2px;
+    margin-bottom: 3px;
+    font-family: 'Tilt Neon', cursive;
+}
+
+.Home h1 span {
+    font-family: 'Kaushan Script', cursive;
+}
+
+.Home h2 {
+    color: #fff;
+    font-size: 22px;
+    margin-top: 0;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+    font-family: 'Tilt Neon', cursive;
 }
 
 .note {
     font-style: italic;
-    font-size: 13px;
+    font-size: 15px;
     color: #fff;
     margin-top: 10px;
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: 2px;
 }
 
 .brand {
@@ -67,4 +84,19 @@
     color: #83bca9;
     padding: 10px;
     border-radius: 10px;
+}
+
+.warning {
+    text-align: center;
+    margin: 50px;
+    font-family: 'Tilt Neon', cursive;
+} 
+
+.warning h1 {
+    font-family: 'Tilt Neon', cursive;
+}
+
+.warning a {
+    font-size: 20px;
+    text-decoration: underline;
 }
