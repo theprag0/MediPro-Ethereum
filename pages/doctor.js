@@ -1,9 +1,11 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useCallback} from "react";
 import { AuthenticationContext } from "../contexts/auth.contexts";
 import { Menu, Icon, Container, Form, Input, Message, Button, Grid } from "semantic-ui-react";
+import UploadModal from "../components/UploadModal";
 import Link from "next/link";
 import Record from "../components/Record";
 import ehr from '../ethereum/ehr';
+import {create} from 'ipfs-http-client';
 
 function Doctor() {
     const {mainAccount} = useContext(AuthenticationContext);
@@ -16,6 +18,22 @@ function Doctor() {
     const [patientExist, setPatientExist] = useState(false);
     const [records, setRecords] = useState([]);
     const [currPatient, setCurrPatient] = useState('');
+    const [uploadLoading, setUploadLoading] = useState(false);
+
+    const INFURA_ID = "2MdNw6HIEDfZbe2luScQn8tw3zK";
+    const INFURA_SECRET_KEY = "3c0ce65e22dac309da46a47320841738";
+    const auth = 'Basic ' + Buffer.from(INFURA_ID + ':' + INFURA_SECRET_KEY).toString('base64');
+
+    const ipfs = create(
+        {
+            host: "ipfs.infura.io",
+            port: 5001,
+            protocol: "https",
+            headers: {
+                authorization: auth, // infura auth credentails
+            }
+        }
+    )
 
     const handlePatientInput = evt => {
         setPatient(evt.target.value);
@@ -53,9 +71,9 @@ function Doctor() {
               setSearchError('Please enter a valid wallet address');
               return;
             }
-            const patientExists = await eth.methods.getPatientExists(patient).call({ from: mainAccount });
+            const patientExists = await ehr.methods.getPatientExists(patient).call({ from: mainAccount });
             if (patientExists) {
-              const records = await eth.methods.getRecords(patient).call({ from: mainAccount });
+              const records = await ehr.methods.getRecords(patient).call({ from: mainAccount });
               console.log('records :>> ', records);
               setRecords(records);
               setPatientExist(true);
@@ -68,6 +86,35 @@ function Doctor() {
         }
         setSearchLoading(false);
     }
+
+    const addRecordCallback = useCallback(
+        async (buffer, fileName, patientAddress) => {
+            setUploadLoading(true);
+            if (!patientAddress) {
+                setUploadLoading(false);
+                return;
+            }
+            try {
+                const res = await ipfs.add(buffer);
+                const ipfsHash = res.path;
+                if (ipfsHash) {
+                    console.log(ipfsHash)
+                    console.log(fileName)
+                    console.log(patientAddress)
+                    await ehr.methods.addRecord(ipfsHash, fileName, patientAddress).send({ from: mainAccount });
+            
+                    // refresh records
+                    const records = await ehr.methods.getRecords(patientAddress).call({ from: mainAccount });
+                    console.log(records);
+                    setRecords(records);
+                }
+            } catch (err) {
+                console.error(err)
+            }
+            setUploadLoading(false);
+        },
+        [ehr, mainAccount, newPatient]
+    );
 
     return (
         <section className="Doctor">
@@ -109,15 +156,17 @@ function Doctor() {
                             </Grid>
                         </Form>
                         <div>
-                            <Button icon labelPosition="left" primary disabled={!patientExist} style={{backgroundColor: '#3e5641', color: '#fff'}}>
-                                <Icon name="cloud upload"/>
-                                New Record
-                            </Button>
+                            <UploadModal 
+                                patientExist={patientExist}
+                                handleUpload={addRecordCallback}
+                                patientAddress={currPatient}
+                                isLoading={uploadLoading}
+                            />
                         </div>
                         {
                             patientExist
                             ? (
-                                <div>
+                                <div style={{marginTop: '20px'}}>
                                     <p><strong>Patient Viewing: </strong>{currPatient}</p>
                                     {
                                         records && records.length > 0

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.8.17;
 
 contract EHR { 
   struct Record { 

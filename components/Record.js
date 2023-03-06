@@ -10,15 +10,15 @@ function Record({record}) {
             <Card.Content>
                 <Grid>
                     <Grid.Row>
-                        <Grid.Column width={2}>
+                        <Grid.Column width={1}>
                             <h1 className="record-label"></h1>
                             <Icon name="file alternate" style={{fontSize: '20px'}}/>
                         </Grid.Column>
-                        <Grid.Column width={4}>
+                        <Grid.Column width={3}>
                             <h1 className="record-label">Record Name</h1>
                             <h1 className="record-text">{name}</h1>
                         </Grid.Column>
-                        <Grid.Column width={4}>
+                        <Grid.Column width={6}>
                             <h1 className="record-label">Doctor</h1>
                             <h1 className="record-text">{doctorId}</h1>
                         </Grid.Column>
@@ -28,7 +28,9 @@ function Record({record}) {
                         </Grid.Column>
                         <Grid.Column width={2}>
                             <h1 className="record-label"></h1>
-                            <Icon name="cloud download" style={{fontSize: '20px', cursor: 'pointer'}}/>
+                            <a href={`https://ipfs.io/ipfs/${cid}`} target='_blank' rel='noopener noreferrer'>
+                                <Icon name="cloud download" style={{fontSize: '20px', cursor: 'pointer'}}/>
+                            </a>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
