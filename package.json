@@ -1,0 +1,26 @@
+{
+  "name": "medipro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "dev": "next dev"
+  },
+  "author": "Praghadiesh",
+  "license": "ISC",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^2.1.7",
+    "fs-extra": "^11.1.0",
+    "ganache-cli": "^6.12.2",
+    "mocha": "^10.2.0",
+    "moment": "^2.29.4",
+    "next": "^12.3.4",
+    "react": "^18.2.0",
+    "react-video-cover": "^1.2.2",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "^2.1.4",
+    "solc": "^0.4.17",
+    "web3": "^1.8.2"
+  }
+}

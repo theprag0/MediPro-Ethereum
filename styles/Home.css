@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.Home {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-image: linear-gradient(90deg, rgba(16, 7, 39, 0.6) 75%, rgba(16, 7, 39, 0.5) 100%),
+		url("../assets/home-bg.jpg");
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
+	/* background-position-y: -15rem; */
+	background-repeat: no-repeat;
+}
+
+.Home div {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    text-align: center;
+}
+
+.Home h1 {
+    color: #fff;
+    font-size: 35px;
+    letter-spacing: 2px;
+}
+
+.note {
+    font-style: italic;
+    font-size: 13px;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.brand {
+    font-size: 20px;
+    font-family: 'Kaushan Script', cursive;
+    color: #fff !important;
+    background-color: #83bca9 !important;
+}
+
+.item {
+    background-color: #83bca9 !important;
+    color: #fff !important;
+    border-radius: 5px;
+}
+
+.styled-hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 3rem 0;
+}
+
