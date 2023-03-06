@@ -118,8 +118,8 @@ function Doctor() {
 
     return (
         <section className="Doctor">
-            <Container style={{margin: '40px 0', backgroudColor: '#fff'}}>
-                <div style={{backgroundColor: '#fff', padding: '2rem', borderRadius: '15px', paddingBottom: '3rem'}}>
+            <Container style={{margin: '40px 0'}}>
+                <div style={{backgroundColor: 'rgba(255, 255, 255, 0.91)', padding: '2rem', borderRadius: '15px', paddingBottom: '3rem'}}>
                     <Menu>
                         <Link href={'/'}>
                             <a className="brand item">MediPro</a>

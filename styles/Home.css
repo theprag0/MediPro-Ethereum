@@ -60,3 +60,11 @@
     margin: 3rem 0;
 }
 
+.role-label {
+    margin-left: 15px;
+    text-transform: uppercase;
+    background-color: #fff;
+    color: #83bca9;
+    padding: 10px;
+    border-radius: 10px;
+}

@@ -49,7 +49,7 @@ function Home() {
         } else if(role === 'patient') {
             return (
                 <>
-                    <Button icon labelPosition="right" size="medium" style={{backgroundColor: '#a24936', color: '#fff'}}>
+                    <Button icon labelPosition="right" size="medium" style={{backgroundColor: '#a24936', color: '#fff'}} onClick={() => router.push('/patient')}>
                         Patient Portal <Icon name="add"/>
                     </Button>
                 </>
