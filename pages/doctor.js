@@ -1,6 +1,7 @@
 import React, {useContext, useState, useCallback} from "react";
 import { AuthenticationContext } from "../contexts/auth.contexts";
 import { Menu, Icon, Container, Form, Input, Message, Button, Grid } from "semantic-ui-react";
+import { Snackbar } from "@material-ui/core";
 import UploadModal from "../components/UploadModal";
 import Link from "next/link";
 import Record from "../components/Record";
@@ -19,6 +20,8 @@ function Doctor() {
     const [records, setRecords] = useState([]);
     const [currPatient, setCurrPatient] = useState('');
     const [uploadLoading, setUploadLoading] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMsg, setAlertMsg] = useState('');
 
     const INFURA_ID = "2MdNw6HIEDfZbe2luScQn8tw3zK";
     const INFURA_SECRET_KEY = "3c0ce65e22dac309da46a47320841738";
@@ -56,6 +59,8 @@ function Doctor() {
             await ehr.methods.addPatient(newPatient).send({
                 from: mainAccount
             });
+            setAlertMsg('Patient Registered Successfully!');
+            setAlertOpen(true);
         } catch(err) {
             setRegisterError(err.message);
         }
@@ -105,8 +110,9 @@ function Doctor() {
             
                     // refresh records
                     const records = await ehr.methods.getRecords(patientAddress).call({ from: mainAccount });
-                    console.log(records);
                     setRecords(records);
+                    setAlertMsg('Record added successfully!');
+                    setAlertOpen(true);
                 }
             } catch (err) {
                 console.error(err)
@@ -115,6 +121,14 @@ function Doctor() {
         },
         [ehr, mainAccount, newPatient]
     );
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setAlertOpen(false);
+    };
 
     const genContent = () => {
         if(mainAccount && role === 'doctor') {
@@ -238,6 +252,16 @@ function Doctor() {
                     {genContent()}
                 </div>
             </Container>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={alertOpen}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message={alertMsg}
+            />
         </section>
     )
 }

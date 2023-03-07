@@ -1,5 +1,6 @@
 import React, {useContext, useState} from "react";
 import { Button, Icon, Message, Container, Menu } from "semantic-ui-react";
+import { Snackbar } from "@material-ui/core";
 import { AuthenticationContext } from "../contexts/auth.contexts";
 import { useRouter } from "next/router";
 import ehr from '../ethereum/ehr';
@@ -9,6 +10,8 @@ function Home() {
     const {role, mainAccount} = useContext(AuthenticationContext);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMsg, setAlertMsg] = useState('');
     const router = useRouter();
     
     const handleRegister = async () => {
@@ -19,12 +22,22 @@ function Home() {
             await ehr.methods.addDoctor().send({
                 from: accounts[0]
             });
+            setAlertMsg('Doctor Registered Successfully!');
+            setAlertOpen(true);
             router.replace('/');
         } catch(err) {
             setError(err.message);
         }
         setLoading(false);
     }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setAlertOpen(false);
+    };
 
     const returnContent = () => {
         if(mainAccount && role === 'unknown') {
@@ -82,6 +95,16 @@ function Home() {
                 <h2>The Decentralized Health Record Experience</h2>
                 {returnContent()}
             </div>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={alertOpen}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message={alertMsg}
+            />
         </main>
     )
 }
