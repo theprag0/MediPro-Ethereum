@@ -7,6 +7,7 @@ import Link from "next/link";
 import Record from "../components/Record";
 import ehr from '../ethereum/ehr';
 import {create} from 'ipfs-http-client';
+// import ehrTemplate from '../assets/pdf/MediPro-EHR-Template.pdf';
 
 function Doctor() {
     const {mainAccount, role} = useContext(AuthenticationContext);
@@ -168,6 +169,12 @@ function Doctor() {
                                 patientAddress={currPatient}
                                 isLoading={uploadLoading}
                             />
+                            <Button icon labelPosition="left" primary style={{backgroundColor: '#3e5641', color: '#fff', marginLeft: '20px'}}>
+                                <Icon name="download"/>
+                                <a href='/pdf/MediPro-EHR-Template.pdf' download style={{color: '#fff'}}>
+                                    Download EHR Template
+                                </a>
+                            </Button>
                         </div>
                         {
                             patientExist
